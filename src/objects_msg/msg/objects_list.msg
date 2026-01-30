@@ -1,0 +1,1 @@
+objects_msg/object_attr[] objects

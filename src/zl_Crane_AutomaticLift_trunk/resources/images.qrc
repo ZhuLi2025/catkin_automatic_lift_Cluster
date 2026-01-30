@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/icon.png</file>
+        <file>images/Exit.png</file>
+        <file>images/greenLight.png</file>
+        <file>images/location.png</file>
+        <file>images/pathplan.png</file>
+        <file>images/redLight.png</file>
+        <file>images/set.png</file>
+        <file>images/stop.png</file>
+        <file>images/suspend.png</file>
+        <file>images/switch.png</file>
+        <file>images/TrajectoryTrack.png</file>
+        <file>images/visualScence.png</file>
+        <file>images/yellowLight.png</file>
+        <file>images/mingdi.png</file>
+        <file>images/MB_Crane.png</file>
+    </qresource>
+</RCC>

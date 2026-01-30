@@ -1,0 +1,104 @@
+syntax = "proto3"; 
+package tutorial;
+
+enum MsgType
+{
+    JOINT_STATE = 0;
+    JOINT_TRAJECTORY = 1;
+    TASK_CMD = 2;
+    TASK_ODER = 3;
+    TASK_STATUS = 4;
+}
+
+enum STATUS
+{
+    Non=0;
+    W=1;
+    RUN_TO_START=2;
+    STOP_START_POINT=3;
+    RUN_TO_GOAL=4;
+    STOP_GOAL_POINT=5;
+    RUN_C=6;
+    STOP_C=7;
+    Finish=8;
+    NOP = 9;
+}
+
+enum DEVICE_STATUS
+{
+    Idle = 0;
+    Running = 1;
+    No = 2;
+}
+
+
+message RobotData
+{
+    string robotName = 1;
+    MsgType type = 2;
+    oneof Deteil
+    {
+        JointState jointState = 3;
+        JointTrajectory trajectory = 4;
+        TaskCommand taskCmd = 5;
+        TaskOder taskOder = 6;
+        TaskStatus taskSta = 7;
+    }
+    int32 heatbeat = 8;
+}
+
+message JointState
+{
+    repeated float positions = 1;
+    repeated float velocities = 2;
+    repeated float accelerations = 3;
+}
+
+message JointTrajectoryPoint
+{
+    int32 time = 1;
+    repeated float positions = 2;
+    repeated float velocities = 3;
+    repeated float accelerations = 4;
+}
+
+message JointTrajectory
+{
+    int32 count = 1;
+    repeated JointTrajectoryPoint points = 2;
+}
+
+message TaskCommandItem
+{
+    string robotName = 1;
+    int32 task_num = 2;
+    float startX = 3;
+    float startY = 4;
+    float startZ = 5;
+
+    float goalX = 6;
+    float goalY = 7;
+    float goalZ = 8;
+    
+    float goal7 = 9;
+}
+
+message TaskCommand
+{
+    repeated TaskCommandItem items = 1;
+}
+
+message TaskOder
+{
+    string robotName = 1;
+    bool stopoder = 2;
+    bool runoder = 3;
+    bool testoder = 4;
+}
+
+message TaskStatus
+{
+    int32 task_num = 1;
+    STATUS status = 2;
+    int32 device_num = 3;
+}

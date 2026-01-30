@@ -1,0 +1,5 @@
+
+
+arm_range_y: [0.0, 6.0] #
+arm_range_z: [-5.0, 100]
+bounding_box_size: [30.0, 20.0, 20.0]

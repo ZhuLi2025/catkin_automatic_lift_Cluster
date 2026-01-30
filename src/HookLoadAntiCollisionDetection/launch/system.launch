@@ -1,0 +1,12 @@
+
+<launch>
+    <arg name="config_file_path" default="$(find HookLoadAntiCollisionDetection)/config.yaml"/> <!-- path to init pcd file -->
+    <arg name="input_topic" default="/pointcloud"/> <!-- path to init pcd file -->
+
+    <node pkg="HookLoadAntiCollisionDetection" type="HookLoadAntiCollisionDetection_node" name="HookLoadAntiCollisionDetection" output="screen" >
+        <param name="config_file_path" value="$(arg config_file_path)"/>
+        <param name="input_topic" value="$(arg input_topic)"/> <!-- path to init pcd file -->
+    </node >
+</launch>
+
+<!-- launch-prefix="gdb -ex run args" -->

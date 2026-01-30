@@ -1,0 +1,9 @@
+<launch>
+    <arg name="config_file_path" default="$(find HookLoadAntiCollisionDetection)/config.yaml"/> <!-- path to init pcd file -->
+    <arg name="input_topic" default="/pointcloud"/> <!-- path to init pcd file -->
+
+    <node pkg="zl_Crane_AutomaticLift_trunk" type="zl_Crane_AutomaticLift_trunk" name="zl_Crane_AutomaticLift_trunk" output="screen"><!-- launch-prefix="gdb -ex run " -->
+        <param name="config_file_path" value="$(arg config_file_path)"/>
+        <param name="input_topic" value="$(arg input_topic)"/> <!-- path to init pcd file -->
+    </node>
+</launch>

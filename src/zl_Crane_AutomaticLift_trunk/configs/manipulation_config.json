@@ -1,0 +1,18 @@
+{
+    "kinematic_parameters":{
+        "d2": 2.25,
+        "d3":1.629,
+        "roller_offset": 1.0
+    },
+    "joint_limits":{
+        "positions":{
+            "uppers":[ 360, 85, 100],
+            "lowers":[-360,  0,   0]
+        },
+        "velocities0": [1, 0.1, 0.7],
+        "velocities1": [1, 0.6, 0.7],
+        "velocities2": [1, 0.1, 0.7],
+        "accelerations": [0.1, 0.03, 0.2]
+    },
+    "lift_capacity_filename": ""
+}

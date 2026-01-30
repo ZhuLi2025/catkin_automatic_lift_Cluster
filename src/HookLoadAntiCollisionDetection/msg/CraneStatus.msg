@@ -1,0 +1,14 @@
+# CraneStatus.msg
+float32 mainArmLength
+float32 subArmAngle
+float32 mainArmAngle
+float32 subArmLength
+float32 mainArmToGroundHeight
+float32 subArmToGroundHeight
+float32 rotationAngle
+float32 mainHookToGroundHeight
+float32 subHookToGroundHeight
+float32 fixedArmAngle
+float32 fixedArmLength
+float32 fixedArmToGroundHeight
+int32   armStatus

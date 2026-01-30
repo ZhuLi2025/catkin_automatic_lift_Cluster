@@ -1,0 +1,11 @@
+float32 cx
+float32 cy
+float32 cz
+float32 qx
+float32 qy
+float32 qz
+float32 qw
+float32 width_x
+float32 height_y
+float32 depth_z
+objects_msg/point_attr[] hulls
