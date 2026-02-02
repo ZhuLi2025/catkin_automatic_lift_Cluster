@@ -676,7 +676,8 @@ void MainWindow::Function_open_Vedio_Stream_Thread()
         QImage img_frame = QImage((const unsigned char*)(image.data), image.cols, image.rows, QImage::Format_RGB888);
 
         m_label_paint_mutex.lock();
-        label_vedio_->setPixmap(QPixmap::fromImage(img_frame.scaled(label_vedio_->size())));
+        // label_vedio_->setPixmap(QPixmap::fromImage(img_frame.scaled(label_vedio_->size())));
+        ui.label_camera->setPixmap(QPixmap::fromImage(img_frame.scaled(ui.label_camera->size())));
         m_label_paint_mutex.unlock();
 
         usleep(100 * 1000);
