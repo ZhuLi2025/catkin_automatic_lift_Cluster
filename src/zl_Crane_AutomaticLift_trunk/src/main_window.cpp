@@ -326,6 +326,17 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(collisionWorkerThread_, &QThread::started, collisionWorker_, &HookLoadAntiCollisionDetector::process);
     connect(collisionWorker_, &HookLoadAntiCollisionDetector::dataUpdated, this, &MainWindow::updateVisualization);
     collisionWorkerThread_->start();
+
+//***************************************************************
+//*********      创建线程函数进行视频图像实时显示          ***********
+//***************************************************************
+    Camera_->OpenCamera();
+    if(open_vedio_stream_thread_.joinable())
+    {
+        open_vedio_stream_thread_.join();
+    }
+    is_open_video_player_display_ = true;
+    open_vedio_stream_thread_ = std::thread(&MainWindow::Function_open_Vedio_Stream_Thread, this);
 }
 
 MainWindow::~MainWindow()
@@ -603,7 +614,6 @@ void MainWindow::connect_Camera_Pcan()
     {
         open_vedio_stream_thread_.join();
     }
-
     is_open_video_player_display_ = true;
     open_vedio_stream_thread_ = std::thread(&MainWindow::Function_open_Vedio_Stream_Thread, this);
 

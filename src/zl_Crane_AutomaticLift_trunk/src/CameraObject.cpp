@@ -176,9 +176,11 @@ NET_DVR_DEVICEINFO_V30 struDeviceInfo = {0};
 struLoginInfo.bUseAsynLogin = false;
 
 struLoginInfo.wPort = 8000;
-mempcpy(struLoginInfo.sDeviceAddress, "192.168.1.64",NET_DVR_DEV_ADDRESS_MAX_LEN);
-memcpy(struLoginInfo.sUserName, "admin", NAME_LEN);
-memcpy(struLoginInfo.sPassword, "Password", NAME_LEN);
+   mempcpy(struLoginInfo.sDeviceAddress, "192.168.1.64",NET_DVR_DEV_ADDRESS_MAX_LEN);//add
+    memcpy(struLoginInfo.sUserName, "admin", NAME_LEN);
+   memcpy(struLoginInfo.sPassword, "Password", NAME_LEN);
+
+
 
 m_lUserID = NET_DVR_Login_V30(struLoginInfo.sDeviceAddress, 8000, struLoginInfo.sUserName, struLoginInfo.sPassword, &struDeviceInfo);
 if(m_lUserID < 0)
@@ -191,7 +193,7 @@ if(m_lUserID < 0)
 }
 
 //相机焦距调节
-setZoomValue(m_strZoom);
+// setZoomValue(m_strZoom);
 return HPR_OK;
 }
 
