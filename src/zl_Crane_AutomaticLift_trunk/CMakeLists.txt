@@ -72,6 +72,7 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 
 set(OpenCV_DIR /usr/local/opencv320/share/OpenCV)
 set(HCNetSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rd_partys/HCNetSDK)
+set(PATH_GENERATE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/third_party/path_generate)
 
 # qt_build provides the qt cmake glue, roscpp the comms for a default talker
 find_package(catkin REQUIRED OpenCV)
@@ -106,6 +107,7 @@ include_directories(
     ${OpenCV_INCLUDE_DIRS}
     ${catkin_INCLUDE_DIRS}
     ${HCNetSDK_DIR}/include
+    ${PATH_GENERATE_ROOT}
     ${orocos_kdl_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIRS}
     ${FreeGLUT_INCLUDE_DIRS}
@@ -118,6 +120,11 @@ add_definitions(${PCL_DEFINITIONS})
 
 add_executable(${PROJECT_NAME} ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
 MESSAGE(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${PROJECT_NAME} ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP}")
+
+# Path planning shared library (imported .so)
+add_library(path_generate_shared SHARED IMPORTED)
+set_target_properties(path_generate_shared PROPERTIES
+    IMPORTED_LOCATION ${PATH_GENERATE_ROOT}/libpath_generate_shared.so)
 
 #检测器需要的库
 target_link_libraries(${PROJECT_NAME}
@@ -136,6 +143,7 @@ target_link_libraries(${PROJECT_NAME}
     zl_motion_planning::zl_motion_planning
     zl_manipulation::zl_manipulation
     # siamrpn::siamrpn
+    path_generate_shared
     paho-mqtt3a
     paho-mqtt3as
     paho-mqttpp3
@@ -157,7 +165,7 @@ target_link_libraries(${PROJECT_NAME} libpcanbasic.so)
 # === 运行时路径配置 ===
 set_target_properties(${PROJECT_NAME} PROPERTIES 
     BUILD_WITH_INSTALL_RPATH TRUE
-    INSTALL_RPATH "${HCNetSDK_DIR}/lib;${HCNetSDK_DIR}/lib/HCNetSDKCom"
+    INSTALL_RPATH "${HCNetSDK_DIR}/lib;${HCNetSDK_DIR}/lib/HCNetSDKCom;${PATH_GENERATE_ROOT}"
 )
 # ======================
 
