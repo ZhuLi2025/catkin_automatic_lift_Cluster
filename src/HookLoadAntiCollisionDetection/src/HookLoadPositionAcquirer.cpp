@@ -744,7 +744,7 @@ bool HookLoadPositionAcquirer<PointT>::getHookLoadCluster(  typename pcl::PointC
                // 按质心到直线距离排序
                 std::sort(clusters.begin(), clusters.end(),
                         [](const ClusterInfo<PointT> &a, const ClusterInfo<PointT> &b){
-                            return a.distance < b.distance;
+                            return (a.distance) < (b.distance);
                         });
                 hookClusterInfo = clusters[0];
             }
@@ -883,7 +883,7 @@ bool HookLoadPositionAcquirer<PointT>::getHookLoadCluster(  typename pcl::PointC
             }
             // 选最优 cluster 并做 region grow
             std::sort(clusters.begin(), clusters.end(), [](const ClusterInfo<PointT>& a, const ClusterInfo<PointT>& b){
-                return a.distance < b.distance;
+                return (a.distance) < (b.distance);
             });
 
             // 如果多个，挑两个最近的并按 x 值选择靠近臂尖的
