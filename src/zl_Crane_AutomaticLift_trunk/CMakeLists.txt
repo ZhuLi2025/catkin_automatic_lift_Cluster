@@ -13,6 +13,13 @@ project(zl_Crane_AutomaticLift_trunk)
 #set(CMAKE_CXX_FLAGS "-D_GLIBCXX_USE_CXX11_ABI=0")
 add_compile_options(-Wall -std=c++14 -Wunused-variable -O3)
 
+
+##############################################################################
+# Debug
+##############################################################################
+option(ENABLE_PATH_GENERATE "enable path generate" OFF)
+
+
 ##############################################################################
 # Qt Environment
 ##############################################################################
@@ -69,10 +76,20 @@ QT5_WRAP_CPP(QT_MOC_HPP ${QT_MOC})
 # Sources
 ##############################################################################
 file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS src/*.cpp)
+# 根据 option 剔除文件
+if(NOT ENABLE_PATH_GENERATE)
+    # 注意：这里的路径必须与 GLOB 产生的路径格式完全一致（包括相对路径前缀）
+    list(REMOVE_ITEM QT_SOURCES "src/path_generate_wrapper.cpp")
+endif()
+
 
 set(OpenCV_DIR /usr/local/opencv320/share/OpenCV)
 set(HCNetSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rd_partys/HCNetSDK)
-set(PATH_GENERATE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/third_party/path_generate)
+
+
+if(ENABLE_PATH_GENERATE)
+    set(PATH_GENERATE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/third_party/path_generate)
+endif()
 
 # qt_build provides the qt cmake glue, roscpp the comms for a default talker
 find_package(catkin REQUIRED OpenCV)
@@ -114,17 +131,23 @@ include_directories(
     ${PCL_INCLUDE_DIRS}
     # ${Torch_INCLUDE_DIRS}
     ${PROTOBUF_INCLUDE_DIRS}
-    )
+)
+if(ENABLE_PATH_GENERATE)
+    include_directories(${PATH_GENERATE_ROOT})
+endif()
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
 add_executable(${PROJECT_NAME} ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
 MESSAGE(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${PROJECT_NAME} ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP}")
 
-# Path planning shared library (imported .so)
-add_library(path_generate_shared SHARED IMPORTED)
-set_target_properties(path_generate_shared PROPERTIES
-    IMPORTED_LOCATION ${PATH_GENERATE_ROOT}/libpath_generate_shared.so)
+
+if(ENABLE_PATH_GENERATE)
+    # Path planning shared library (imported .so)
+    add_library(path_generate_shared SHARED IMPORTED)
+    set_target_properties(path_generate_shared PROPERTIES
+        IMPORTED_LOCATION ${PATH_GENERATE_ROOT}/libpath_generate_shared.so)
+endif()
 
 #检测器需要的库
 target_link_libraries(${PROJECT_NAME}
@@ -143,17 +166,19 @@ target_link_libraries(${PROJECT_NAME}
     zl_motion_planning::zl_motion_planning
     zl_manipulation::zl_manipulation
     # siamrpn::siamrpn
-    path_generate_shared
     paho-mqtt3a
     paho-mqtt3as
     paho-mqttpp3
     ${PROTOBUF_LIBRARIES}
-    )
+)
+if(ENABLE_PATH_GENERATE)
+    target_link_libraries(${PROJECT_NAME} path_generate_shared)
+endif()
+
 
 # 2. 扫描该目录下所有的动态库文件，存入变量 ALL_LIBS
 file(GLOB HCNetSDK_LIBS "${HCNetSDK_DIR}/lib/*.so*")
 file(GLOB HCNetSDKCom_LIBS "${HCNetSDK_DIR}/lib/HCNetSDKCom/*.so*")
-
 
 # 4. 链接所有找到的库
 target_link_libraries(${PROJECT_NAME} 
@@ -167,6 +192,13 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     BUILD_WITH_INSTALL_RPATH TRUE
     INSTALL_RPATH "${HCNetSDK_DIR}/lib;${HCNetSDK_DIR}/lib/HCNetSDKCom;${PATH_GENERATE_ROOT}"
 )
+if(ENABLE_PATH_GENERATE)
+    set_target_properties(${PROJECT_NAME} PROPERTIES 
+        BUILD_WITH_INSTALL_RPATH TRUE
+        INSTALL_RPATH "${PATH_GENERATE_ROOT}"
+    )
+endif()
+
 # ======================
 
 
