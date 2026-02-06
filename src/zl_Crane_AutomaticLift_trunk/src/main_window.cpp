@@ -8872,6 +8872,7 @@ void zl_Crane_AutomaticLift_trunk::MainWindow::updateVisualization(CollisionResu
 
     // 刷新渲染
     qvtkWidget_->GetRenderWindow()->Render();
+
 }
 //***************************************************************
 //*********                 碰撞检测及点云可视化 end     ***********
